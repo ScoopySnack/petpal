@@ -18,14 +18,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUntil jwtUtil;
-
     private final JwtUtil jwtUtil;
-
-    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUntil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    private final JwtUtil jwtUtil;
+    
 
     public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -34,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<String> register(User user) {
+    public ResponseEntity<String> register(User user){
         if (userRepository.existsByUsername(user.getUsername())) {
             return ResponseEntity.badRequest().body("Username already exists");
         }
@@ -58,4 +52,3 @@ public class AuthServiceImpl implements AuthService {
         return ResponseEntity.ok(Map.of("token", token));
     }
 }
-
