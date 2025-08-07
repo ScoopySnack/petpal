@@ -35,4 +35,30 @@ public class PetController {
         Pet saved = petRepository.save(pet);
         return ResponseEntity.ok(saved);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Pet> getPetById(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        return petRepository.findById(id)
+                .filter(pet -> pet.getOwner().getId().equals(user.getId()))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build()); // changed to 404
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pet> updatePet(@PathVariable Long id,
+                                         @Valid @RequestBody Pet updatedPet,
+                                         @AuthenticationPrincipal User user) {
+        return petRepository.findById(id)
+                .filter(pet -> pet.getOwner().getId().equals(user.getId()))
+                .map(existingPet -> {
+                    existingPet.setName(updatedPet.getName());
+                    existingPet.setSpecies(updatedPet.getSpecies());
+                    existingPet.setBreed(updatedPet.getBreed());
+                    existingPet.setAge(updatedPet.getAge());
+                    return ResponseEntity.ok(petRepository.save(existingPet));
+                })
+                .orElse(ResponseEntity.notFound().build()); // changed to 404
+    }
+
+
 }

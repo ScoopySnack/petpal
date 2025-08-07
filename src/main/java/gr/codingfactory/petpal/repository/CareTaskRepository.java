@@ -9,4 +9,5 @@ import java.util.List;
 public interface CareTaskRepository extends JpaRepository<CareTask, Long> {
     List<CareTask> findByPetId(Long petId);
     List<CareTask> findByDueDateBeforeAndStatus(LocalDate date, String status);
+    List<CareTask> findByPetOwnerId(Long ownerId);
 }
