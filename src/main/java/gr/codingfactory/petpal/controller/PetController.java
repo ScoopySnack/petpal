@@ -1,4 +1,38 @@
 package gr.codingfactory.petpal.controller;
 
+import gr.codingfactory.petpal.model.Pet;
+import gr.codingfactory.petpal.model.User;
+import gr.codingfactory.petpal.repository.PetRepository;
+import gr.codingfactory.petpal.repository.UserRepository;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/pets")
 public class PetController {
+
+    private final PetRepository petRepository;
+    private final UserRepository userRepository;
+
+    public PetController(PetRepository petRepository, UserRepository userRepository) {
+        this.petRepository = petRepository;
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping
+    public List<Pet> getMyPets(@AuthenticationPrincipal User user) {
+        return petRepository.findByOwner(user);
+    }
+
+    @PostMapping
+    public ResponseEntity<Pet> createPet(@AuthenticationPrincipal User user,
+                                         @Valid @RequestBody Pet pet) {
+        pet.setOwner(user);
+        Pet saved = petRepository.save(pet);
+        return ResponseEntity.ok(saved);
+    }
 }
