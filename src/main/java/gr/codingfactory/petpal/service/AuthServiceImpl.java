@@ -4,7 +4,7 @@ import gr.codingfactory.petpal.model.AuthRequest;
 import gr.codingfactory.petpal.model.Role;
 import gr.codingfactory.petpal.model.User;
 import gr.codingfactory.petpal.repository.UserRepository;
-import gr.codingfactory.petpal.security.JwtUntil;
+import gr.codingfactory.petpal.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
