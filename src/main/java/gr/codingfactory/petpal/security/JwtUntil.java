@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Component
-public class JwtUntil {
+public class JwtUtil {
 
     private final String SECRET_KEY = "secret_petpal"; // μπορείς να το βάλεις και σε env
 
