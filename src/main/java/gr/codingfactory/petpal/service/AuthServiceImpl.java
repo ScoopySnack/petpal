@@ -40,8 +40,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<Map<String, String>> login(AuthRequest request) {
+        System.out.println("Login attempt for user: " + request.getUsername());
+        System.out.println("Raw password: " + request.getPassword());
+
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        System.out.println("Encoded password in DB: " + user.getPassword());
+        System.out.println("Match result: " + passwordEncoder.matches(request.getPassword(), user.getPassword()));
+
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
