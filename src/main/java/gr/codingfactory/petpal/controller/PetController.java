@@ -41,7 +41,7 @@ public class PetController {
         return petRepository.findById(id)
                 .filter(pet -> pet.getOwner().getId().equals(user.getId()))
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build()); // changed to 404
+                .orElse(ResponseEntity.status(403).build()); // ή 404 αν προτιμάς
     }
 
     @PutMapping("/{id}")
@@ -57,7 +57,7 @@ public class PetController {
                     existingPet.setAge(updatedPet.getAge());
                     return ResponseEntity.ok(petRepository.save(existingPet));
                 })
-                .orElse(ResponseEntity.notFound().build()); // changed to 404
+                .orElse(ResponseEntity.status(403).build()); // ή 404
     }
 
 
